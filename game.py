@@ -1,7 +1,9 @@
+import streamlit as st
+
 def print_board(board):
     for row in board:
-        print(" | ".join(row))
-        print("-" * 5)
+        st.write(" | ".join(row))
+        st.write("-" * 5)
 
 def check_winner(board):
     # Check rows, columns, and diagonals
@@ -28,27 +30,28 @@ def play_game():
 
     while True:
         print_board(board)
-        row = int(input(f"Player {player}, enter row number (0, 1, or 2): "))
-        col = int(input(f"Player {player}, enter column number (0, 1, or 2): "))
+        row = st.number_input(f"Player {player}, enter row number (0, 1, or 2): ", min_value=0, max_value=2, step=1)
+        col = st.number_input(f"Player {player}, enter column number (0, 1, or 2): ", min_value=0, max_value=2, step=1)
 
         if board[row][col] == ' ':
             board[row][col] = player
         else:
-            print("That position is already taken. Try again.")
+            st.write("That position is already taken. Try again.")
             continue
 
         winner = check_winner(board)
         if winner:
             print_board(board)
-            print(f"Player {winner} wins!")
+            st.write(f"Player {winner} wins!")
             break
         elif is_board_full(board):
             print_board(board)
-            print("It's a draw!")
+            st.write("It's a draw!")
             break
 
         # Switch player
         player = 'O' if player == 'X' else 'X'
 
 if __name__ == "__main__":
+    st.title("Tic-Tac-Toe Game")
     play_game()
